@@ -11,7 +11,7 @@
     
     <style>
         /* ==========================================================================
-           ПНЕСЕТЫ И CSS-ПЕРЕМЕННЫЕ (White-Label система)
+           ПРЕСЕТЫ И CSS-ПЕРЕМЕННЫЕ (White-Label система)
            ========================================================================== */
         :root {
             --bg-primary: #FAF9F6;
@@ -205,7 +205,7 @@
         }
 
         /* ==========================================================================
-           3. ГАЛЕРЕЯ-ПОРТФОЛИО (БЕЗ ЦЕН)
+           3. ГАЛЕРЕЯ-ПОРТФОЛИО И ФИЛЬТРЫ
            ========================================================================== */
         .section {
             padding: 70px 0;
@@ -221,8 +221,37 @@
         .section-subtitle {
             text-align: center;
             color: var(--text-muted);
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             font-size: 15px;
+        }
+
+        /* Фильтры в стиле сайта */
+        .catalog-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent);
+            color: #FFFFFF;
+            border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(200, 150, 128, 0.25);
         }
 
         .gallery-grid {
@@ -267,6 +296,21 @@
             transform: scale(1.05);
         }
 
+        /* Бейджи на фото */
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #FFFFFF;
+            z-index: 2;
+        }
+        .badge-hit { background: #D97762; }
+        .badge-new { background: var(--sage); }
+
         .card-body {
             padding: 20px;
             display: flex;
@@ -277,14 +321,49 @@
         .card-title {
             font-family: var(--font-heading);
             font-size: 22px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .card-desc {
             font-size: 13px;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-grow: 1;
+        }
+
+        .card-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .price-current {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .price-old {
+            font-size: 13px;
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* Карточка заказного букета */
+        .card-custom {
+            background: linear-gradient(135deg, #FAF9F6 0%, #F5EFEA 100%);
+            border: 2px dashed var(--accent);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .card-custom-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
 
         /* ==========================================================================
@@ -446,6 +525,129 @@
             .hero-subtitle { font-size: 15px; }
             .hero-actions { flex-direction: column; }
         }
+
+        /* ==========================================================================
+           8. СТИЛИ КОЛЕСА ФОРТУНЫ (Адаптированы под сайт)
+           ========================================================================== */
+        #wheel-widget-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: var(--accent);
+            color: #FFFFFF;
+            padding: 12px 22px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(200, 150, 128, 0.4);
+            z-index: 9998;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+            animation: pulse-btn 2.2s infinite;
+        }
+        #wheel-widget-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(200, 150, 128, 0.5);
+        }
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        #wheel-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        #wheel-modal-overlay.wheel-modal-hidden {
+            display: none;
+            opacity: 0;
+        }
+        .wheel-modal-content {
+            background: #FFFFFF;
+            width: 90%;
+            max-width: 420px;
+            border-radius: var(--radius);
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .wheel-modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            font-size: 26px; color: var(--text-muted);
+            cursor: pointer;
+        }
+        .wheel-title { font-family: var(--font-heading); font-size: 28px; color: var(--text-main); margin-bottom: 6px; }
+        .wheel-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+        .wheel-container {
+            position: relative;
+            width: 280px; height: 280px;
+            margin: 0 auto 20px;
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px; color: var(--accent);
+            z-index: 10;
+        }
+        #wheelCanvas {
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 4s cubic-bezier(0.15, 0.9, 0.15, 1);
+        }
+
+        #spin-btn {
+            background: var(--accent);
+            color: #FFFFFF; border: none;
+            padding: 14px 35px; border-radius: 30px;
+            font-size: 15px; font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(200, 150, 128, 0.3);
+            transition: var(--transition);
+        }
+        #spin-btn:hover { background: var(--accent-hover); }
+        #spin-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+
+        .win-icon { font-size: 44px; margin-bottom: 10px; }
+        .win-title { font-family: var(--font-heading); font-size: 30px; color: var(--text-main); }
+        .win-prize-label { margin: 10px 0 5px; font-size: 14px; color: var(--text-muted); }
+        .win-prize-box {
+            background: var(--bg-primary); color: var(--accent);
+            font-family: var(--font-heading); font-size: 22px; font-weight: 700;
+            padding: 12px; border-radius: var(--radius);
+            border: 1px dashed var(--accent);
+            margin-bottom: 15px;
+        }
+        .win-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+        .win-cta-button {
+            display: inline-block;
+            background: var(--accent);
+            color: #FFFFFF; text-decoration: none;
+            padding: 14px 28px; border-radius: 30px;
+            font-weight: 600; font-size: 15px;
+            transition: var(--transition);
+        }
+        .win-cta-button:hover { background: var(--accent-hover); }
     </style>
 </head>
 <body>
@@ -485,60 +687,110 @@
         </div>
     </section>
 
-    <!-- 3. ГАЛЕРЕЯ-ПОРТФОЛИО (БЕЗ ЦЕН) -->
+    <!-- 3. ГАЛЕРЕЯ-ПОРТФОЛИО С ФИЛЬТРАМИ И ЦЕНАМИ -->
     <section class="section" id="portfolio">
         <div class="container">
             <h2 class="section-title">Коллекция Florista — вдохновение для вашего повода</h2>
             <p class="section-subtitle">Каждая композиция собирается флористом индивидуально из свежей поставки</p>
 
+            <!-- Фильтры категорий -->
+            <div class="catalog-filters">
+                <button class="filter-btn active" onclick="filterCatalog('all', event)">Все работы</button>
+                <button class="filter-btn" onclick="filterCatalog('budget', event)">До 4 000 ₽</button>
+                <button class="filter-btn" onclick="filterCatalog('box', event)">В коробках</button>
+                <button class="filter-btn" onclick="filterCatalog('hit', event)">Хиты 🔥</button>
+            </div>
+
             <div class="gallery-grid">
+                
                 <!-- Карточка 1 -->
-                <div class="card">
+                <div class="card" data-category="hit budget">
                     <div class="card-image-wrap">
-                        <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80" alt="Букет Florista" class="card-image">
+                        <span class="card-badge badge-hit">🔥 Хит</span>
+                        <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80" alt="Пионовидные розы" class="card-image">
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">Пионовидные розы и эвкалипт</h3>
                         <p class="card-desc">Нежная гамма, идеален для романтического вечера или дня рождения.</p>
-                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Пионовидные розы')">Узнать наличие в Florista</button>
+                        <div class="card-price-row">
+                            <span class="price-current">3 600 ₽</span>
+                            <span class="price-old">4 200 ₽</span>
+                        </div>
+                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Пионовидные розы')">Заказать в Florista</button>
                     </div>
                 </div>
 
                 <!-- Карточка 2 -->
-                <div class="card">
+                <div class="card" data-category="box hit">
                     <div class="card-image-wrap">
-                        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80" alt="Букет Florista" class="card-image">
+                        <span class="card-badge badge-new">✨ Новинка</span>
+                        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80" alt="Шляпная коробка" class="card-image">
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">Композиция в шляпной коробке</h3>
                         <p class="card-desc">Сборный монохромный сет с гортензией и французскими розами.</p>
-                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Шляпная коробка')">Хочу похожий букет</button>
+                        <div class="card-price-row">
+                            <span class="price-current">5 900 ₽</span>
+                        </div>
+                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Шляпная коробка')">Заказать в Florista</button>
                     </div>
                 </div>
 
                 <!-- Карточка 3 -->
-                <div class="card">
+                <div class="card" data-category="budget">
                     <div class="card-image-wrap">
-                        <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=600&q=80" alt="Свадебная флористика" class="card-image">
+                        <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=600&q=80" alt="Солнечный микс" class="card-image">
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title">Свадебный букет невесты</h3>
-                        <p class="card-desc">Авторская сборка под фасон платья и общий концепт торжества.</p>
-                        <button class="btn btn-outline" onclick="openModal('Запрос: Свадебный букет')">Рассчитать стоимость</button>
+                        <h3 class="card-title">Солнечный микс</h3>
+                        <p class="card-desc">Яркие герберы, кустовая роза и сезонная зелень в авторской сборке.</p>
+                        <div class="card-price-row">
+                            <span class="price-current">2 900 ₽</span>
+                        </div>
+                        <button class="btn btn-outline" onclick="openModal('Запрос: Солнечный микс')">Заказать в Florista</button>
                     </div>
                 </div>
 
                 <!-- Карточка 4 -->
-                <div class="card">
+                <div class="card" data-category="hit">
                     <div class="card-image-wrap">
-                        <img src="https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=600&q=80" alt="Экзотический букет" class="card-image">
+                        <span class="card-badge badge-hit">🔥 Хит</span>
+                        <img src="https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=600&q=80" alt="Сет Экзотика" class="card-image">
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">Авторский сет «Экзотика»</h3>
-                        <p class="card-desc">Яркое сочетание антуриумов, орхидей и сезонной зелени.</p>
-                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Сет Экзотика')">Узнать наличие в Florista</button>
+                        <p class="card-desc">Яркое сочетание антуриумов, орхидей и экзотической зелени.</p>
+                        <div class="card-price-row">
+                            <span class="price-current">5 400 ₽</span>
+                            <span class="price-old">6 500 ₽</span>
+                        </div>
+                        <button class="btn btn-outline" onclick="openModal('Узнать наличие: Сет Экзотика')">Заказать в Florista</button>
                     </div>
                 </div>
+
+                <!-- Карточка 5 -->
+                <div class="card" data-category="budget">
+                    <div class="card-image-wrap">
+                        <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80" alt="Воздушная гипсофила" class="card-image">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Воздушное облако</h3>
+                        <p class="card-desc">Пышный монобукет из стойкой пастельной гипсофилы.</p>
+                        <div class="card-price-row">
+                            <span class="price-current">3 200 ₽</span>
+                        </div>
+                        <button class="btn btn-outline" onclick="openModal('Запрос: Воздушное облако')">Заказать в Florista</button>
+                    </div>
+                </div>
+
+                <!-- Карточка 6: Спец-заказ -->
+                <div class="card card-custom" data-category="all">
+                    <div class="card-custom-icon">🎨</div>
+                    <h3 class="card-title">Букет по вашему фото</h3>
+                    <p class="card-desc" style="margin-bottom: 20px;">Понравился букет из Pinterest? Пришлите фото, и флорист соберет точную копию!</p>
+                    <a href="https://t.me/cvety_2026_bot?start=custom_photo" target="_blank" class="btn btn-primary btn-shimmer">Собрать с флористом</a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -655,16 +907,74 @@
             <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">
                 Нажмите кнопку ниже, чтобы перейти в Telegram-бота. Он подберет для вас 3 лучших варианта и зафиксирует скидку 10%!
             </p>
-        
-            <!-- Прямая ссылка-кнопка вместо формы -->
-            <a href="https://t.me/ИМЯ_ВАШЕГО_БОТА?start=site_lead" target="_blank" class="btn btn-primary btn-shimmer" style="width: 100%;">
+            <a href="https://t.me/cvety_2026_bot?start=site_lead" target="_blank" class="btn btn-primary btn-shimmer" style="width: 100%;">
                 Запустить Telegram-бота 🌸
             </a>
         </div>
     </div>
 
-    <!-- ПРОСТОЙ СКРИПТ ДЛЯ ИНТЕРАКТИВА -->
+    <!-- ================= КОЛЕСО ФОРТУНЫ (WIDGET + MODAL) ================= -->
+    <div id="wheel-widget-btn" onclick="openWheelModal()">
+        <span class="wheel-widget-icon">🎁</span>
+        <span class="wheel-widget-text">Испытать удачу</span>
+    </div>
+
+    <div id="wheel-modal-overlay" class="wheel-modal-hidden">
+        <div class="wheel-modal-content">
+            <button class="wheel-modal-close" onclick="closeWheelModal()">&times;</button>
+            
+            <div id="wheel-game-stage">
+                <h2 class="wheel-title">Испытайте удачу! 🎉</h2>
+                <p class="wheel-subtitle">Крутите колесо и получите гарантированный приз к вашему букету</p>
+                
+                <div class="wheel-container">
+                    <div class="wheel-pointer">▼</div>
+                    <canvas id="wheelCanvas" width="320" height="320"></canvas>
+                </div>
+
+                <button id="spin-btn" onclick="spinWheel()">ВРАЩАТЬ КОЛЕСО</button>
+            </div>
+
+            <div id="wheel-win-stage" style="display: none;">
+                <div class="win-icon">🎉</div>
+                <h2 class="win-title">Поздравляем!</h2>
+                <p class="win-prize-label">Ваш выигрыш:</p>
+                <div id="win-prize-name" class="win-prize-box">Бесплатная упаковка</div>
+                <p class="win-desc">Приз забронирован за вашим аккаунтом. Заберите его при подборе букета в Telegram!</p>
+                
+                <a id="win-telegram-btn" href="https://t.me/cvety_2026_bot" target="_blank" class="win-cta-button">
+                    🎁 Забрать приз в Telegram
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- СКРИПТЫ УПРАВЛЕНИЯ И ИНТЕРАКТИВА -->
     <script>
+        // Бот в Telegram
+        const botUsername = "cvety_2026_bot";
+
+        // Функция фильтрации каталога
+        function filterCatalog(category, event) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.gallery-grid .card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains('card-custom')) {
+                    card.style.display = 'flex';
+                } else {
+                    const categories = card.getAttribute('data-category');
+                    if (categories && categories.includes(category)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Логика основного модального окна
         function openModal(title) {
             document.getElementById('modal-title').innerText = title || 'Заявка в Florista';
             document.getElementById('modal').style.display = 'flex';
@@ -676,7 +986,7 @@
 
         function handleFormSubmit(e) {
             e.preventDefault();
-            alert('Заявка принята! Данные будут отправлены в Telegram-бот.');
+            window.open(`https://t.me/${botUsername}?start=site_form_lead`, '_blank');
             closeModal();
         }
 
@@ -687,281 +997,98 @@
                 closeModal();
             }
         }
-    </script>
-    <!-- ================= КОЛЕСО ФОРТУНЫ (WIDGET + MODAL) ================= -->
 
-<!-- 1. Плавающая кнопка в углу экрана -->
-<div id="wheel-widget-btn" onclick="openWheelModal()">
-    <span class="wheel-widget-icon">🎁</span>
-    <span class="wheel-widget-text">Крутить колесо</span>
-</div>
+        // ================= ЛОГИКА КОЛЕСА ФОРТУНЫ =================
+        const prizes = [
+            { name: "Бесплатная упаковка", code: "win_pack", color: "#C89680" },
+            { name: "Эвкалипт и зелень", code: "win_greens", color: "#8A9A86" },
+            { name: "Красивая открытка", code: "win_card", color: "#E0C3B5" },
+            { name: "Скидка 10%", code: "win_disc10", color: "#B3826D" },
+            { name: "Премиум-лента", code: "win_ribbon", color: "#A3B1A0" },
+            { name: "Топпер на выбор", code: "win_topper", color: "#D8A793" },
+            { name: "+3 цветка в подарок", code: "win_flowers", color: "#C89680" },
+            { name: "500 бонусов", code: "win_bonus500", color: "#8A9A86" }
+        ];
 
-<!-- 2. Модальное окно с колесом -->
-<div id="wheel-modal-overlay" class="wheel-modal-hidden">
-    <div class="wheel-modal-content">
-        <button class="wheel-modal-close" onclick="closeWheelModal()">&times;</button>
-        
-        <div id="wheel-game-stage">
-            <h2 class="wheel-title">Испытайте удачу! 🎉</h2>
-            <p class="wheel-subtitle">Крутите колесо и получите гарантированный приз к вашему букету</p>
-            
-            <div class="wheel-container">
-                <div class="wheel-pointer">▼</div>
-                <canvas id="wheelCanvas" width="320" height="320"></canvas>
-            </div>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const numSectors = prizes.length;
+        const arcSize = (2 * Math.PI) / numSectors;
+        let isSpinning = false;
+        let currentRotation = 0;
 
-            <button id="spin-btn" onclick="spinWheel()">ВРАЩАТЬ КОЛЕСО</button>
-        </div>
+        function drawWheel() {
+            const radius = canvas.width / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        <!-- Экран выигрыша (изначально скрыт) -->
-        <div id="wheel-win-stage" style="display: none;">
-            <div class="win-icon">🎉</div>
-            <h2 class="win-title">Поздравляем!</h2>
-            <p class="win-prize-label">Ваш выигрыш:</p>
-            <div id="win-prize-name" class="win-prize-box">Бесплатная упаковка</div>
-            <p class="win-desc">Приз забронирован за вашим аккаунтом. Заберите его при подборе букета в Telegram!</p>
-            
-            <a id="win-telegram-btn" href="https://t.me/FloristaBot" target="_blank" class="win-cta-button">
-                🎁 Забрать приз в Telegram
-            </a>
-        </div>
-    </div>
-</div>
+            for (let i = 0; i < numSectors; i++) {
+                const angle = i * arcSize;
+                
+                ctx.beginPath();
+                ctx.fillStyle = prizes[i].color;
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, angle, angle + arcSize);
+                ctx.lineTo(radius, radius);
+                ctx.fill();
 
-<!-- Стили колеса фортуны -->
-<style>
-    /* Плавающая кнопка */
-    #wheel-widget-btn {
-        position: fixed;
-        bottom: 25px;
-        left: 25px;
-        background: linear-gradient(135deg, #ff4757, #ff6b81);
-        color: #fff;
-        padding: 12px 20px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
-        z-index: 9998;
-        font-family: inherit;
-        font-weight: 600;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: pulse-btn 2s infinite;
-    }
-    #wheel-widget-btn:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 12px 30px rgba(255, 71, 87, 0.6);
-    }
-    @keyframes pulse-btn {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-
-    /* Модальное окно */
-    #wheel-modal-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        opacity: 1;
-        transition: opacity 0.3s ease;
-    }
-    #wheel-modal-overlay.wheel-modal-hidden {
-        display: none;
-        opacity: 0;
-    }
-    .wheel-modal-content {
-        background: #ffffff;
-        width: 90%;
-        max-width: 420px;
-        border-radius: 24px;
-        padding: 30px 20px;
-        text-align: center;
-        position: relative;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        font-family: inherit;
-    }
-    .wheel-modal-close {
-        position: absolute;
-        top: 15px; right: 20px;
-        background: none; border: none;
-        font-size: 28px; color: #aaa;
-        cursor: pointer;
-    }
-    .wheel-title { margin: 0 0 5px; font-size: 22px; color: #222; }
-    .wheel-subtitle { margin: 0 0 20px; font-size: 13px; color: #666; }
-
-    /* Контейнер колеса */
-    .wheel-container {
-        position: relative;
-        width: 280px; height: 280px;
-        margin: 0 auto 20px;
-    }
-    .wheel-pointer {
-        position: absolute;
-        top: -12px; left: 50%;
-        transform: translateX(-50%);
-        font-size: 24px; color: #ff4757;
-        z-index: 10;
-        text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    #wheelCanvas {
-        width: 280px; height: 280px;
-        border-radius: 50%;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        transition: transform 4s cubic-bezier(0.15, 0.9, 0.15, 1);
-    }
-
-    /* Кнопка вращения */
-    #spin-btn {
-        background: linear-gradient(135deg, #2ed573, #26af5f);
-        color: white; border: none;
-        padding: 14px 35px; border-radius: 30px;
-        font-size: 16px; font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
-        transition: transform 0.2s;
-    }
-    #spin-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
-
-    /* Экран победы */
-    .win-icon { font-size: 48px; margin-bottom: 10px; }
-    .win-title { margin: 0; font-size: 24px; color: #2ed573; }
-    .win-prize-label { margin: 10px 0 5px; font-size: 14px; color: #777; }
-    .win-prize-box {
-        background: #f1f9f5; color: #26af5f;
-        font-size: 18px; font-weight: bold;
-        padding: 12px; border-radius: 12px;
-        border: 2px dashed #2ed573;
-        margin-bottom: 15px;
-    }
-    .win-desc { font-size: 13px; color: #666; margin-bottom: 20px; }
-    .win-cta-button {
-        display: inline-block;
-        background: linear-gradient(135deg, #0088cc, #0077b5);
-        color: white; text-decoration: none;
-        padding: 14px 25px; border-radius: 30px;
-        font-weight: bold; font-size: 15px;
-        box-shadow: 0 6px 20px rgba(0, 136, 204, 0.3);
-    }
-</style>
-
-<!-- Скрипт механики колеса -->
-<script>
-    // Настройки призов (8 секторов)
-    const prizes = [
-        { name: "Бесплатная упаковка", code: "win_pack", color: "#FF6B6B" },
-        { name: "Эвкалипт и зелень", code: "win_greens", color: "#4ECDC4" },
-        { name: "Красивая открытка", code: "win_card", color: "#FFE66D" },
-        { name: "Скидка 10%", code: "win_disc10", color: "#1A535C" },
-        { name: "Премиум-лента", code: "win_ribbon", color: "#FF9F43" },
-        { name: "Топпер на выбор", code: "win_topper", color: "#10AC84" },
-        { name: "+3 цветка в подарок", code: "win_flowers", color: "#EE5253" },
-        { name: "500 бонусов", code: "win_bonus500", color: "#0A3D62" }
-    ];
-
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const numSectors = prizes.length;
-    const arcSize = (2 * Math.PI) / numSectors;
-    let isSpinning = false;
-    let currentRotation = 0;
-
-    // Отрисовка колеса
-    function drawWheel() {
-        const radius = canvas.width / 2;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        for (let i = 0; i < numSectors; i++) {
-            const angle = i * arcSize;
-            
-            // Сектор
-            ctx.beginPath();
-            ctx.fillStyle = prizes[i].color;
-            ctx.moveTo(radius, radius);
-            ctx.arc(radius, radius, radius, angle, angle + arcSize);
-            ctx.lineTo(radius, radius);
-            ctx.fill();
-
-            // Текст
-            ctx.save();
-            ctx.translate(radius, radius);
-            ctx.rotate(angle + arcSize / 2);
-            ctx.textAlign = "right";
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 11px Arial";
-            ctx.fillText(prizes[i].name, radius - 15, 4);
-            ctx.restore();
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 11px Inter, sans-serif";
+                ctx.fillText(prizes[i].name, radius - 15, 4);
+                ctx.restore();
+            }
         }
-    }
 
-    // Запуск вращения
-    function spinWheel() {
-        if (isSpinning) return;
-        isSpinning = true;
-        document.getElementById('spin-btn').disabled = true;
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('spin-btn').disabled = true;
 
-        // Выбираем случайный сектор
-        const winningIndex = Math.floor(Math.random() * numSectors);
-        const winningPrize = prizes[winningIndex];
+            const winningIndex = Math.floor(Math.random() * numSectors);
+            const winningPrize = prizes[winningIndex];
 
-        // Расчет угла: 5 полных оборотов + смещение на нужный сектор к верхней стрелке
-        const sectorAngleDeg = 360 / numSectors;
-        const targetDeg = 360 * 5 + (360 - (winningIndex * sectorAngleDeg) - (sectorAngleDeg / 2)) - 90;
+            const sectorAngleDeg = 360 / numSectors;
+            const targetDeg = 360 * 5 + (360 - (winningIndex * sectorAngleDeg) - (sectorAngleDeg / 2)) - 90;
 
-        currentRotation += targetDeg;
-        canvas.style.transform = `rotate(${currentRotation}deg)`;
+            currentRotation += targetDeg;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
 
-        // После завершения анимации (4 секунды)
-        setTimeout(() => {
-            showWinStage(winningPrize);
-            localStorage.setItem('florista_won_prize', JSON.stringify(winningPrize));
-        }, 4000);
-    }
-
-    // Показ победного экрана
-    function showWinStage(prize) {
-        document.getElementById('wheel-game-stage').style.display = 'none';
-        document.getElementById('wheel-win-stage').style.display = 'block';
-        document.getElementById('win-prize-name').innerText = prize.name;
-        
-        // Указываем Deep-link с кодом приза
-        const botUsername = "cvety_2026_bot"; // Укажите юзернейм своего бота без @
-        document.getElementById('win-telegram-btn').href = `https://t.me/${botUsername}?start=${prize.code}`;
-    }
-
-    // Управление модальным окном
-    function openWheelModal() {
-        document.getElementById('wheel-modal-overlay').classList.remove('wheel-modal-hidden');
-    }
-
-    function closeWheelModal() {
-        document.getElementById('wheel-modal-overlay').classList.add('wheel-modal-hidden');
-    }
-
-    // Инициализация при загрузке
-    window.addEventListener('DOMContentLoaded', () => {
-        drawWheel();
-
-        // Проверяем, выигрывал ли уже пользователь
-        const savedPrize = localStorage.getItem('florista_won_prize');
-        if (savedPrize) {
-            showWinStage(JSON.parse(savedPrize));
-        } else {
-            // Вариант В: Автопоказ через 6 секунд
             setTimeout(() => {
-                openWheelModal();
-            }, 6000);
+                showWinStage(winningPrize);
+                localStorage.setItem('florista_won_prize', JSON.stringify(winningPrize));
+            }, 4000);
         }
-    });
-</script>
-<!-- ================= КОНЕЦ КОЛЕСА ФОРТУНЫ ================= -->
+
+        function showWinStage(prize) {
+            document.getElementById('wheel-game-stage').style.display = 'none';
+            document.getElementById('wheel-win-stage').style.display = 'block';
+            document.getElementById('win-prize-name').innerText = prize.name;
+            document.getElementById('win-telegram-btn').href = `https://t.me/${botUsername}?start=${prize.code}`;
+        }
+
+        function openWheelModal() {
+            document.getElementById('wheel-modal-overlay').classList.remove('wheel-modal-hidden');
+        }
+
+        function closeWheelModal() {
+            document.getElementById('wheel-modal-overlay').classList.add('wheel-modal-hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            drawWheel();
+
+            const savedPrize = localStorage.getItem('florista_won_prize');
+            if (savedPrize) {
+                showWinStage(JSON.parse(savedPrize));
+            } else {
+                setTimeout(() => {
+                    openWheelModal();
+                }, 6000);
+            }
+        });
+    </script>
 </body>
 </html>
